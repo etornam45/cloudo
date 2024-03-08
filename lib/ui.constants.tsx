@@ -1,36 +1,124 @@
-import { DashIcon, HomeIcon, QuestionMarkCircledIcon, GearIcon, AvatarIcon } from "@radix-ui/react-icons";
+import { DashIcon, HomeIcon, QuestionMarkCircledIcon, GearIcon, AvatarIcon, BoxIcon, StarIcon, ClockIcon, TrashIcon, Share1Icon, FileMinusIcon, FileIcon, DiscIcon } from "@radix-ui/react-icons";
+import { ComponentMapItem, NavGroupProps, Routes } from "./types";
 
-export const NavBarItems = [
+export const NavBarItems: NavGroupProps[] = [
     {
-        icon:  <DashIcon />,
-        label: "Dashboard",
+        icon: <></>,
+        label: "Overview",
+        children: [{
+            icon: <BoxIcon />,
+            label: "Overview",
+            renderId: "",
+        }]
+    },
+    {
+        icon: <DashIcon />,
+        label: "File Manager",
         children: [
             {
-                path: "/",
-                label: "Home",
-                icon: <HomeIcon />,
+                label: "Storage",
+                icon: <DiscIcon />,
+                renderId: "Storage"
             },
             {
-                path: "/about",
-                label: "About",
-                icon: <QuestionMarkCircledIcon />,
+                label: "Recents",
+                renderId: "Recents",
+                icon: <ClockIcon />,
+            },
+            {
+                label: "Favorites",
+                renderId: "Favorites",
+                icon: <StarIcon />,
+            },
+            {
+                label: "Trash",
+                renderId: "Trash",
+                icon: <TrashIcon />,
             },
         ],
+    },
+    {
+        label: "Shared Files",
+        icon: <Share1Icon />,
+        children: [
+            {
+                icon: <FileMinusIcon />,
+                label: "Folders",
+                renderId: "Folders",
+            },
+            {
+                icon: <FileIcon />,
+                label: "Files",
+                renderId: "Files"
+            }
+        ]
     },
     {
         icon: <GearIcon />,
         label: "Settings",
         children: [
             {
-                path: "/settings",
+                renderId: "settings",
                 label: "General",
                 icon: <GearIcon />,
             },
             {
-                path: "/settings/profile",
+                renderId: "profile",
                 label: "Profile",
                 icon: <AvatarIcon />,
             },
         ],
     },
 ];
+
+
+
+
+/**
+ * Map of page component IDs to their corresponding React components.
+ */
+export const ComponentsMap: Record<Routes, ComponentMapItem> = {
+    // Overview Section 
+    "": {
+        title: "Overview",
+        component: <>Overiew</>
+    },
+
+
+    // File Manager Section
+    "Storage": {
+        title: "File Manager",
+        component: <>My storage</>
+    },
+
+
+    "Recents": {
+        title: "File Manager",
+        component: <>Recent Files</>
+    },
+
+    "Favorites": {
+        title: "File Manager",
+        component: <>Favorite Items</>
+    },
+
+    "Trash": {
+        title: "File Manager",
+        component: <>Trash </>
+    },
+
+
+    // Shared Files Section 
+    "Folders": {
+        title: "Shared Files",
+        component: <>Shared Folders</>
+    },
+    "Files": {
+        title: "Shared Files",
+        component: <>Shared Files</>
+    },
+    Overview: {
+        title: "Overview",
+        component: <>Overview</>
+    }
+};

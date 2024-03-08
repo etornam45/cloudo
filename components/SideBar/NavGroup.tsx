@@ -1,5 +1,6 @@
 import { NavGroupProps } from "@/lib/types";
 import { Separator } from "@radix-ui/react-separator";
+import Link from "next/link";
 import { useState } from "react";
 
 
@@ -32,7 +33,7 @@ const NavGroup = ({ item }: { item: NavGroupProps }) => {
                         return (
                             <li key={i} className="flex gap-3 items-center">
                                 {child.icon && child.icon}
-                                <a href={child.path}>{child.label}</a>
+                                <Link href={`/${child.renderId}`}>{child.label}</Link>
                             </li>
                         );
                     })}
