@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import SideBar from "@/components/SideBar/SideBar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +18,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="font-sans text-base">
+      <body className={inter.className}>
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel defaultSize={20} maxSize={20} minSize={5}>
+            <SideBar />
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={80}>
+            <ScrollArea >
+              {children}
+            </ScrollArea>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </body>
     </html>
   );
 }
