@@ -1,0 +1,51 @@
+// https://dbdiagram.io/
+
+Table users {
+  id integer [primary key]
+  username varchar
+  email varchar
+}
+
+Table folder {
+  id integer [pk]
+  name varchar
+  created_at datetime
+  user_id integer
+}
+
+Table file {
+  id integer [pk]
+  name varchar
+  size integer // (in bytes)
+  created datetime
+  type_id integer
+  user_id integer
+  folder_id integer
+}
+
+Table fileType {
+  id integer [primary key]
+  name varchar
+}
+
+Table sharedFolder {
+  id integer [pk]
+  folder_id integer
+  user_id integer
+}
+
+Table sharedFiles {
+  id integer [pk]
+  folder_id integer
+  user_id integer
+}
+
+ref: users.id < folder.user_id
+ref: users.id < file.user_id
+ref: folder.id < file.user_id
+ref: file.type_id > fileType.id
+ref: sharedFolder.folder_id > folder.id
+ref: sharedFolder.folder_id > users.id
+
+ref: sharedFiles.folder_id > folder.id
+ref: sharedFiles.folder_id > users.id
