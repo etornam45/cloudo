@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  username      String
+  email         String
+  folders       Folder[]
+  files         File[]
+  sharedFolders SharedFolder[]
+  sharedFiles   SharedFile[]
+  StoragePlan   StoragePlan?   @relation(fields: [storagePlanId], references: [id])
+  storagePlanId String?        @db.ObjectId
+}
+
+model StoragePlan {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  max_storage Int
+  price       Float
+  users       Users[]
+}
+
+model Folder {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  created_at DateTime
+
+  owner_id     String         @db.ObjectId
+  owner        Users          @relation(fields: [owner_id], references: [id])
+  files        File[]
+  SharedFolder SharedFolder[]
+
+  parent_id String   @db.ObjectId
+  children  Folder   @relation("FolderToFolder", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Folder    Folder[] @relation("FolderToFolder")
+}
+
+model File {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  size_bytes  Int
+  created_at  DateTime
+  type_id     String       @db.ObjectId
+  owner_id    String       @db.ObjectId
+  folder_id   String       @db.ObjectId
+  owner       Users        @relation(fields: [owner_id], references: [id])
+  folder      Folder       @relation(fields: [folder_id], references: [id])
+  type        FileType     @relation(fields: [type_id], references: [id])
+  sharedFiles SharedFile[]
+}
+
+model FileType {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  files File[]
+}
+
+model SharedFolder {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  folder_id String @db.ObjectId
+  user_id   String @db.ObjectId
+  folder    Folder @relation(fields: [folder_id], references: [id])
+  user      Users  @relation(fields: [user_id], references: [id])
+}
+
+model SharedFile {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  file_id String @db.ObjectId
+  user_id String @db.ObjectId
+  file    File   @relation(fields: [file_id], references: [id])
+  user    Users  @relation(fields: [user_id], references: [id])
+}
