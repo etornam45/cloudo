@@ -6,10 +6,12 @@ import { ReactNode } from "react";
 
 export default function LeftPageLayout({ params, children }: { children: ReactNode, params: { megaId: Routes } }) {
     return <>
-        <div>
+        <div className="min-h-screen">
             <Header pageTitle={ComponentsMap[params.megaId].title} />
             <Separator />
-            {children}
+            <div className="p-3"> 
+                {children}
+            </div>
         </div>
     </>
 } 
