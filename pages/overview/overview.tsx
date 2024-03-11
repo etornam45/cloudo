@@ -1,7 +1,9 @@
 import StorageOverview from './OverviewStorage';
 
-export default function Overiew (){
-    return <div>
-        <StorageOverview />
-    </div>
+export default function Overiew() {
+    return (
+        <div>
+            <StorageOverview />
+        </div>
+    )
 }
