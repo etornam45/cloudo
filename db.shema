@@ -1,0 +1,108 @@
+// https://dbdiagram.io/
+
+Table users {
+  id integer [primary key]
+  username varchar
+  email varchar
+}
+
+Table folder {
+  id integer [pk]
+  name varchar
+  created_at datetime
+  user_id integer
+}
+
+Table file {
+  id integer [pk]
+  name varchar
+  size integer // (in bytes)
+  created datetime
+  type_id integer
+  user_id integer
+  folder_id integer
+}
+
+Table fileType {
+  id integer [primary key]
+  name varchar
+}
+
+Table sharedFolder {
+  id integer [pk]
+  folder_id integer
+  user_id integer
+}
+
+Table sharedFiles {
+  id integer [pk]
+  folder_id integer
+  user_id integer
+}
+
+ref: users.id < folder.user_id
+ref: users.id < file.user_id
+ref: folder.id < file.user_id
+ref: file.type_id > fileType.id
+ref: sharedFolder.folder_id > folder.id
+ref: sharedFolder.folder_id > users.id
+
+ref: sharedFiles.folder_id > folder.id
+ref: sharedFiles.folder_id > users.id
+
+
+
+model Users {
+  id      Int      @id @default(autoincrement())
+  username  String
+  email     String
+  folders   Folder[]
+  files     File[]
+  sharedFolders SharedFolder[]
+  sharedFiles SharedFile[]
+}
+
+model Folder {
+  id        Int      @id @default(autoincrement())
+  name      String
+  created_at DateTime
+  owner_id  Int
+  owner     Users    @relation(fields: [owner_id], references: [id])
+  files     File[]
+}
+
+model File {
+  id         Int      @id @default(autoincrement())
+  name       String
+  size_bytes Int
+  created_at DateTime
+  type_id    Int
+  owner_id   Int
+  folder_id  Int
+  owner      Users    @relation(fields: [owner_id], references: [id])
+  folder     Folder   @relation(fields: [folder_id], references: [id])
+  type       FileType  @relation(fields: [type_id], references: [id])
+  sharedFiles SharedFile[]
+}
+
+model FileType {
+  id   Int    @id @default(autoincrement())
+  name String
+  files File[]
+}
+
+model SharedFolder {
+  id        Int      @id @default(autoincrement())
+  folder_id Int
+  user_id   Int
+  folder    Folder   @relation(fields: [folder_id], references: [id])
+  user      Users    @relation(fields: [user_id], references: [id])
+}
+
+model SharedFile {
+  id      Int      @id @default(autoincrement())
+  file_id Int
+  user_id Int
+  file    File     @relation(fields: [file_id], references: [id])
+  user    Users    @relation(fields: [user_id], references: [id])
+}

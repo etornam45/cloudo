@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en" className="font-sans text-base">
       <body className={inter.className}>
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel defaultSize={20} maxSize={20} minSize={5}>
+          <ResizablePanel defaultSize={20} maxSize={20} minSize={15}>
             <SideBar />
           </ResizablePanel>
           <ResizableHandle withHandle />
