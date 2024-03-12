@@ -9,12 +9,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Users {
-  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  id            String         @id @default(cuid())  
   username      String
   email         String         @unique
   password      String
@@ -23,40 +23,40 @@ model Users {
   sharedFolders SharedFolder[]
   sharedFiles   SharedFile[]
   StoragePlan   StoragePlan?   @relation(fields: [storagePlanId], references: [id])
-  storagePlanId String?        @db.ObjectId
+  storagePlanId String?        
 }
 
 model StoragePlan {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(cuid())  
   name        String
-  max_storage Int
+  max_storage BigInt
   price       Float
   users       Users[]
 }
 
 model Folder {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(cuid())  
   name       String
   created_at DateTime
 
-  owner_id     String         @db.ObjectId
+  owner_id     String         
   owner        Users          @relation(fields: [owner_id], references: [id])
   files        File[]
   SharedFolder SharedFolder[]
 
-  parent_id String   @db.ObjectId
+  parent_id String   
   children  Folder   @relation("FolderToFolder", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Folder    Folder[] @relation("FolderToFolder")
 }
 
 model File {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  id          String       @id @default(cuid())  
   name        String
   size_bytes  Int
   created_at  DateTime
-  type_id     String       @db.ObjectId
-  owner_id    String       @db.ObjectId
-  folder_id   String       @db.ObjectId
+  type_id     String       
+  owner_id    String       
+  folder_id   String       
   owner       Users        @relation(fields: [owner_id], references: [id])
   folder      Folder       @relation(fields: [folder_id], references: [id])
   type        FileType     @relation(fields: [type_id], references: [id])
@@ -64,23 +64,23 @@ model File {
 }
 
 model FileType {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  id    String @id @default(cuid())  
   name  String
   files File[]
 }
 
 model SharedFolder {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  folder_id String @db.ObjectId
-  user_id   String @db.ObjectId
+  id        String @id @default(cuid())  
+  folder_id String 
+  user_id   String 
   folder    Folder @relation(fields: [folder_id], references: [id])
   user      Users  @relation(fields: [user_id], references: [id])
 }
 
 model SharedFile {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  file_id String @db.ObjectId
-  user_id String @db.ObjectId
+  id      String @id @default(cuid())  
+  file_id String 
+  user_id String 
   file    File   @relation(fields: [file_id], references: [id])
   user    Users  @relation(fields: [user_id], references: [id])
 }
