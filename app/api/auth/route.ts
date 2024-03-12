@@ -1,12 +1,35 @@
 import { prisma } from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
+import bcrypt from 'bcryptjs';
 
-export async function POST(req: Request) {
+import { NextRequest, NextResponse } from "next/server"
+
+
+export async function POST(req: NextRequest) {
     const body = await req.json() as unknown as Prisma.UsersCreateInput
-    console.log(body);
+
     try {
-        return Response.json(await prisma.users.create({data: {...body}}))
+        const storagePlan = await prisma.storagePlan.findFirst({
+            where: {
+                price: 0
+            }
+        })
+        
+
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(body.password, salt);
+        
+        const user = await prisma.users.create({
+            data: {
+                username: body.username,
+                email: body.email,
+                password: hashedPassword,
+                storagePlanId: storagePlan?.id
+            }
+        })
+
+        return NextResponse.json({...user, password: undefined})
     } catch (error) {
-        return Response.json(error)
+        return NextResponse.json(error)
     }
 }
