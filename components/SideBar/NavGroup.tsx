@@ -30,7 +30,7 @@ const NavGroup = ({ item }: { item: NavGroupProps }) => {
                 <ul className="ml-4">
                     {item.children.map((child, i) => {
                         return (
-                            <Link href={`/${child.renderId}`} className="flex gap-3 p-2 rounded-sm items-center w-full hover:bg-slate-200">
+                            <Link key={i} href={`/${child.renderId}`} className="flex gap-3 p-2 rounded-sm items-center w-full hover:bg-slate-200">
                                 {child.icon && child.icon}
 
                                 {child.label}</Link>
