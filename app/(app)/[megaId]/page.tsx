@@ -1,3 +1,4 @@
+"use client"
 import { Routes } from "@/lib/types";
 import { ComponentsMap } from "@/lib/ui.constants";
 
