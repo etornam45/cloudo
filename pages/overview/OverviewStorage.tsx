@@ -26,7 +26,7 @@ interface FileTypesCardProps {
 
 export const FileTypesCard = (file: FileTypesCardProps) => {
     return (
-        <Card className="rounded-sm p-3 ">
+        <Card className="rounded-sm p-3 shadow-none hover:shadow-md" >
             <div className="flex  flex-col gap-3">
                 <div className="flex items-center gap-3">
                     <div className="icon w-12 aspect-square flex items-center justify-center bg-slate-500 rounded-sm" style={{ backgroundColor: `color-mix(in srgb, ${file.color} 80%, white 70%)` }}>

@@ -50,8 +50,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
         })
 
-        return NextResponse.json({
-            message: "Successfuly logged in"
+        return NextResponse.json({...user, password: null // remove password from response
         }, {
             status: 200,
             headers: {

@@ -1,5 +1,6 @@
 import { DashIcon, HomeIcon, QuestionMarkCircledIcon, GearIcon, AvatarIcon, BoxIcon, StarIcon, ClockIcon, TrashIcon, Share1Icon, FileMinusIcon, FileIcon, DiscIcon } from "@radix-ui/react-icons";
 import { ComponentMapItem, NavGroupProps, Routes } from "./types";
+import { Button } from "@/components/ui/button";
 
 export const NavBarItems: NavGroupProps[] = [
     {
@@ -88,7 +89,7 @@ export const ComponentsMap: Record<Routes, ComponentMapItem> = {
     // File Manager Section
     "Storage": {
         title: "File Manager",
-        component: <>My storage</>
+        component: <Button variant="outline"> A botton </Button> 
     },
 
 
