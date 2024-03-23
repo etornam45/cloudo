@@ -7,7 +7,11 @@ export async function GET(req: NextRequest) {
     try {
         await CheckAuth(req);
 
-        const fileTypes = await prisma.fileType.findMany()
+        const fileTypes = await prisma.fileType.findMany({
+            include: {
+                _count: true
+            }
+        })
 
         return NextResponse.json(fileTypes)
 
@@ -25,7 +29,7 @@ export async function POST(req: NextRequest) {
         const fileType = await prisma.fileType.create({
             data: body
         })
-        
+
     } catch (error) {
         return NextResponse.json(error)
     }

@@ -7,6 +7,7 @@ import SideBar from "@/components/SideBar/SideBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Provider } from "jotai";
 import { Toaster } from "@/components/ui/sonner";
+import RightSideBar from "@/components/RightSidebar/RightSideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
 
-  
+
+
   return (
     <html lang="en" className="font-sans text-base">
       <Provider><body className={inter.className}>
@@ -36,6 +37,10 @@ export default function RootLayout({
               {children}
             </ScrollArea>
           </ResizablePanel>
+          <ResizableHandle />
+
+          <RightSideBar />
+
         </ResizablePanelGroup>
         <Toaster />
       </body></Provider>

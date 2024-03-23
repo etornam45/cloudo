@@ -59,9 +59,14 @@ export interface FileI {
 
 export interface FileTypeI {
     id: string;
-    name: string;
+    name: FileTypes;
     files?: FileI[];
+    _count?: {
+        files: number;
+    }
 }
+
+export type FileTypes = "Documents" | "Images" | "Video" | "Audio" | "Others";
 
 export interface SharedFolderI {
     id: string;

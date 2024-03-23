@@ -12,6 +12,10 @@ export async function GET(req: NextRequest) {
         const folders = await prisma.folder.findMany({
             where: {
                 owner_id: user.id
+            },
+            include: {
+                files: true,
+                Folder: true,
             }
         })
 
